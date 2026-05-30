@@ -36,6 +36,18 @@ final class MarkdownBlockParserTests: XCTestCase {
         ])
     }
 
+    func testParserSupportsTildeFencedCodeBlocks() throws {
+        let blocks = MarkdownBlockParser.parse("""
+        ~~~toml
+        enabled = true
+        ~~~
+        """)
+
+        XCTAssertEqual(blocks, [
+            .code(language: "toml", text: "enabled = true")
+        ])
+    }
+
     func testParserTreatsUnclosedFenceAsCodeBlock() throws {
         let blocks = MarkdownBlockParser.parse("""
         Intro
@@ -47,6 +59,77 @@ final class MarkdownBlockParserTests: XCTestCase {
         XCTAssertEqual(blocks, [
             .markdown("Intro"),
             .code(language: "json", text: #"{"ok": true}"#)
+        ])
+    }
+
+    func testParserDetectsGitHubStyleTables() throws {
+        let blocks = MarkdownBlockParser.parse("""
+        Before
+
+        | Provider | WebSocket | Risk |
+        | :---- | :----: | ----: |
+        | **Yandex Cloud** | Yes | KYC |
+        | Gcore | No | Timeout |
+
+        After
+        """)
+
+        XCTAssertEqual(blocks, [
+            .markdown("Before"),
+            .table(MarkdownTable(
+                headers: ["Provider", "WebSocket", "Risk"],
+                alignments: [.leading, .center, .trailing],
+                rows: [
+                    ["**Yandex Cloud**", "Yes", "KYC"],
+                    ["Gcore", "No", "Timeout"]
+                ]
+            )),
+            .markdown("After")
+        ])
+    }
+
+    func testParserDetectsExportedLanguageLabelCodeBlocks() throws {
+        let blocks = MarkdownBlockParser.parse("""
+        Config:
+
+        JSON  
+        {  
+          "serverName": "vkvideo.ru",  
+          "publicKey": "YOUR\\_REALITY\\_PUBLIC\\_KEY"  
+        }
+
+        ### Next section
+        """)
+
+        XCTAssertEqual(blocks, [
+            .markdown("Config:"),
+            .code(
+                language: "JSON",
+                text: """
+                {
+                  "serverName": "vkvideo.ru",
+                  "publicKey": "YOUR_REALITY_PUBLIC_KEY"
+                }
+                """
+            ),
+            .markdown("### Next section")
+        ])
+    }
+
+    func testParserDetectsIndentedCodeBlocks() throws {
+        let blocks = MarkdownBlockParser.parse("""
+        Before
+
+            curl -I https://example.com
+            echo ok
+
+        After
+        """)
+
+        XCTAssertEqual(blocks, [
+            .markdown("Before"),
+            .code(language: nil, text: "curl -I https://example.com\necho ok"),
+            .markdown("After")
         ])
     }
 }

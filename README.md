@@ -11,7 +11,12 @@ block to the macOS clipboard.
 
 - Quick Look preview extension for `.md` and `.markdown` files.
 - Native SwiftUI/AppKit renderer, no WebKit dependency.
+- GitHub-Flavored Markdown tables with column alignment.
+- Backtick fences, tilde fences, indented code blocks, and exported
+  language-label code blocks such as `JSON` or `Ini, TOML`.
 - Visible copy buttons for fenced code blocks.
+- Headings, paragraphs, ordered/unordered lists, task lists, blockquotes, and
+  horizontal rules.
 - Clipboard integration through `NSPasteboard`.
 - UTF-8 reading with Windows CP1251 and ISO Latin 1 fallbacks.
 - Local install into `/Applications`.
@@ -105,10 +110,11 @@ Build and install locally:
 
 ## Scope
 
-`MD Quick Copy` is a Quick Look preview extension, not a Markdown editor. The
-native renderer covers common Markdown reading and copyable fenced code blocks.
-It is intentionally small; very advanced GitHub-Flavored Markdown constructs may
-need richer parsing in a future version.
+`MD Quick Copy` is a Quick Look preview extension, not a Markdown editor. It
+uses a native renderer for predictable Quick Look behavior and avoids executing
+HTML or remote content from Markdown files. Very advanced Markdown extensions
+outside common CommonMark/GFM reading patterns may still need future parsing
+work.
 
 ## License
 

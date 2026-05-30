@@ -57,8 +57,11 @@ That path was removed.
 
 The final implementation is native SwiftUI/AppKit inside the Quick Look extension:
 
-- headings, paragraphs, simple lists, inline Markdown text, and fenced code blocks
-  are rendered without WebKit;
+- headings, paragraphs, ordered/unordered/task lists, blockquotes, horizontal
+  rules, inline Markdown text, GFM-style tables, and code blocks are rendered
+  without WebKit;
+- code detection covers backtick fences, tilde fences, indented code blocks, and
+  exported language-label blocks such as `JSON` / `Ini, TOML`;
 - each fenced code block gets a visible green `Copy` button;
 - copy writes directly to `NSPasteboard.general`;
 - the extension reads UTF-8, Windows CP1251, and ISO Latin 1 text as fallbacks.
@@ -71,7 +74,7 @@ Build and tests:
 
 - `xcodegen generate --spec project.yml --project .` completed successfully.
 - `xcodebuild test -project MDQuickCopy.xcodeproj -scheme MDQuickCopyCoreTests -destination 'platform=macOS'` passed.
-- Result: 3 tests, 0 failures.
+- Result after the expanded Markdown renderer update: 7 tests, 0 failures.
 
 Install and registration:
 
@@ -110,9 +113,9 @@ print(value)
 - A physical reboot was not performed. Persistence is based on normal macOS
   app placement in `/Applications`, LaunchServices registration, pluginkit user
   election, and Quick Look cache reset.
-- The renderer is not a full GitHub Markdown engine. It covers the requested
-  Quick Look preview flow and copyable fenced code blocks; very advanced Markdown
-  constructs may need a richer parser later.
+- The renderer intentionally does not execute embedded HTML or remote content
+  from Markdown files. Very advanced Markdown extensions outside common
+  CommonMark/GFM reading patterns may need future parsing work.
 
 ## Reinstall/update command
 

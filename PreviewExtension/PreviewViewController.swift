@@ -66,6 +66,8 @@ private struct MarkdownPreviewView: View {
                         MarkdownTextBlock(text: text)
                     case .code(let language, let text):
                         CodeBlockView(language: language, code: text)
+                    case .table(let table):
+                        TableBlockView(table: table)
                     }
                 }
             }
@@ -95,36 +97,142 @@ private struct MarkdownTextBlock: View {
         let line = rawLine.trimmingCharacters(in: .whitespaces)
         if line.isEmpty {
             Spacer(minLength: 4)
-        } else if line.hasPrefix("# ") {
-            Text(inlineText(String(line.dropFirst(2))))
-                .font(.system(size: 30, weight: .semibold))
-                .padding(.bottom, 5)
-                .overlay(alignment: .bottom) {
-                    Rectangle()
-                        .fill(Color(nsColor: .separatorColor))
-                        .frame(height: 1)
-                }
-        } else if line.hasPrefix("## ") {
-            Text(inlineText(String(line.dropFirst(3))))
-                .font(.system(size: 22, weight: .semibold))
-        } else if line.hasPrefix("### ") {
-            Text(inlineText(String(line.dropFirst(4))))
-                .font(.system(size: 18, weight: .semibold))
-        } else if line.hasPrefix("- ") {
+        } else if let heading = heading(line) {
+            headingView(level: heading.level, text: heading.text)
+        } else if let task = taskListItem(line) {
             HStack(alignment: .top, spacing: 8) {
-                Text("-")
+                Image(systemName: task.isDone ? "checkmark.square.fill" : "square")
                     .font(.body.weight(.medium))
-                Text(inlineText(String(line.dropFirst(2))))
+                    .foregroundStyle(task.isDone ? .green : .secondary)
+                    .frame(width: 16)
+                Text(inlineMarkdown(task.text))
             }
             .font(.body)
+        } else if let unordered = unorderedListItem(line) {
+            HStack(alignment: .top, spacing: 8) {
+                Text("•")
+                    .font(.body.weight(.medium))
+                Text(inlineMarkdown(unordered))
+            }
+            .font(.body)
+        } else if let ordered = orderedListItem(line) {
+            HStack(alignment: .top, spacing: 8) {
+                Text("\(ordered.number).")
+                    .font(.body.weight(.medium))
+                    .foregroundStyle(.secondary)
+                Text(inlineMarkdown(ordered.text))
+            }
+            .font(.body)
+        } else if let quote = blockquote(line) {
+            Text(inlineMarkdown(quote))
+                .font(.body)
+                .foregroundStyle(.secondary)
+                .padding(.leading, 12)
+                .overlay(alignment: .leading) {
+                    Rectangle()
+                        .fill(Color(nsColor: .separatorColor))
+                        .frame(width: 3)
+                }
+        } else if isHorizontalRule(line) {
+            Rectangle()
+                .fill(Color(nsColor: .separatorColor))
+                .frame(height: 1)
+                .padding(.vertical, 7)
         } else {
-            Text(inlineText(line))
+            Text(inlineMarkdown(line))
                 .font(.body)
         }
     }
 
-    private func inlineText(_ text: String) -> AttributedString {
-        (try? AttributedString(markdown: text)) ?? AttributedString(text)
+    @ViewBuilder
+    private func headingView(level: Int, text: String) -> some View {
+        Text(inlineMarkdown(text))
+            .font(.system(size: headingSize(level), weight: .semibold))
+            .padding(.bottom, level == 1 ? 5 : 0)
+            .overlay(alignment: .bottom) {
+                if level == 1 {
+                    Rectangle()
+                        .fill(Color(nsColor: .separatorColor))
+                        .frame(height: 1)
+                }
+            }
+    }
+
+    private func heading(_ line: String) -> (level: Int, text: String)? {
+        let level = line.prefix { $0 == "#" }.count
+        guard (1...6).contains(level),
+              line.dropFirst(level).first == " " else {
+            return nil
+        }
+
+        return (level, String(line.dropFirst(level + 1)))
+    }
+
+    private func headingSize(_ level: Int) -> CGFloat {
+        switch level {
+        case 1: return 30
+        case 2: return 22
+        case 3: return 18
+        case 4: return 16
+        default: return 15
+        }
+    }
+
+    private func unorderedListItem(_ line: String) -> String? {
+        for marker in ["- ", "* ", "+ "] where line.hasPrefix(marker) {
+            return String(line.dropFirst(marker.count))
+        }
+        return nil
+    }
+
+    private func taskListItem(_ line: String) -> (isDone: Bool, text: String)? {
+        guard let content = unorderedListItem(line) else {
+            return nil
+        }
+
+        if content.hasPrefix("[ ] ") {
+            return (false, String(content.dropFirst(4)))
+        }
+        if content.hasPrefix("[x] ") || content.hasPrefix("[X] ") {
+            return (true, String(content.dropFirst(4)))
+        }
+
+        return nil
+    }
+
+    private func orderedListItem(_ line: String) -> (number: String, text: String)? {
+        guard let markerIndex = line.firstIndex(of: ".") else {
+            return nil
+        }
+
+        let number = line[..<markerIndex]
+        let textStart = line.index(after: markerIndex)
+        guard !number.isEmpty,
+              number.allSatisfy(\.isNumber),
+              textStart < line.endIndex,
+              line[textStart] == " " else {
+            return nil
+        }
+
+        return (String(number), String(line[line.index(after: textStart)...]))
+    }
+
+    private func blockquote(_ line: String) -> String? {
+        if line.hasPrefix("> ") {
+            return String(line.dropFirst(2))
+        }
+        if line == ">" {
+            return ""
+        }
+        return nil
+    }
+
+    private func isHorizontalRule(_ line: String) -> Bool {
+        let collapsed = line.replacingOccurrences(of: " ", with: "")
+        return collapsed.count >= 3 &&
+            (collapsed.allSatisfy { $0 == "-" } ||
+             collapsed.allSatisfy { $0 == "*" } ||
+             collapsed.allSatisfy { $0 == "_" })
     }
 }
 
@@ -180,4 +288,82 @@ private struct CodeBlockView: View {
             copied = false
         }
     }
+}
+
+private struct TableBlockView: View {
+    let table: MarkdownTable
+
+    var body: some View {
+        ScrollView(.horizontal) {
+            Grid(alignment: .topLeading, horizontalSpacing: 0, verticalSpacing: 0) {
+                GridRow {
+                    ForEach(Array(table.headers.enumerated()), id: \.offset) { column, value in
+                        tableCell(value, column: column, isHeader: true)
+                    }
+                }
+
+                ForEach(Array(table.rows.enumerated()), id: \.offset) { _, row in
+                    GridRow {
+                        ForEach(0..<table.headers.count, id: \.self) { column in
+                            tableCell(rowValue(row, column), column: column, isHeader: false)
+                        }
+                    }
+                }
+            }
+            .background(Color(nsColor: .textBackgroundColor))
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .overlay {
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color(nsColor: .separatorColor), lineWidth: 1)
+            }
+        }
+    }
+
+    private func rowValue(_ row: [String], _ column: Int) -> String {
+        column < row.count ? row[column] : ""
+    }
+
+    private func tableCell(_ text: String, column: Int, isHeader: Bool) -> some View {
+        Text(inlineMarkdown(text))
+            .font(.system(size: 13, weight: isHeader ? .semibold : .regular))
+            .textSelection(.enabled)
+            .lineLimit(nil)
+            .frame(width: columnWidth(column), alignment: table.alignments[safe: column]?.frameAlignment ?? .leading)
+            .padding(.vertical, 9)
+            .padding(.horizontal, 10)
+            .background(isHeader ? Color(nsColor: .controlBackgroundColor) : Color(nsColor: .textBackgroundColor))
+            .border(Color(nsColor: .separatorColor), width: 0.5)
+    }
+
+    private func columnWidth(_ column: Int) -> CGFloat {
+        switch column {
+        case 0:
+            return 210
+        default:
+            return 180
+        }
+    }
+}
+
+private extension MarkdownTableAlignment {
+    var frameAlignment: Alignment {
+        switch self {
+        case .leading:
+            return .leading
+        case .center:
+            return .center
+        case .trailing:
+            return .trailing
+        }
+    }
+}
+
+private extension Collection {
+    subscript(safe index: Index) -> Element? {
+        indices.contains(index) ? self[index] : nil
+    }
+}
+
+private func inlineMarkdown(_ text: String) -> AttributedString {
+    (try? AttributedString(markdown: text)) ?? AttributedString(text)
 }
