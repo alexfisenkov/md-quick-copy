@@ -1,22 +1,26 @@
 # MD Quick Copy
 
 Native macOS Quick Look previews for Markdown files, with visible copy buttons
-for fenced code blocks.
+for fenced code blocks and Markdown tables.
 
 Select a `.md` file in Finder, press Space, and Markdown opens as a readable
 preview instead of raw text. Code blocks get a `Copy` button that writes the
-block to the macOS clipboard.
+block to the macOS clipboard. Tables get copy controls for Markdown, CSV, and
+TSV.
 
 ## Features
 
 - Quick Look preview extension for `.md` and `.markdown` files.
 - Native SwiftUI/AppKit renderer, no WebKit dependency.
 - GitHub-Flavored Markdown tables with column alignment.
+- Table copy buttons for Markdown, CSV, and TSV.
+- Document outline for Markdown files with multiple headings.
 - Backtick fences, tilde fences, indented code blocks, and exported
   language-label code blocks such as `JSON` or `Ini, TOML`.
 - Visible copy buttons for fenced code blocks.
 - Headings, paragraphs, ordered/unordered lists, task lists, blockquotes, and
   horizontal rules.
+- Host app with install status, GitHub access, and maintenance commands.
 - Clipboard integration through `NSPasteboard`.
 - UTF-8 reading with Windows CP1251 and ISO Latin 1 fallbacks.
 - Local install into `/Applications`.
@@ -108,13 +112,20 @@ Build and install locally:
 ./script/install_app.sh
 ```
 
+GitHub Actions runs the same project generation, tests, and Release build on
+pushes and pull requests.
+
 ## Scope
 
 `MD Quick Copy` is a Quick Look preview extension, not a Markdown editor. It
 uses a native renderer for predictable Quick Look behavior and avoids executing
-HTML or remote content from Markdown files. Very advanced Markdown extensions
-outside common CommonMark/GFM reading patterns may still need future parsing
-work.
+HTML, scripts, or remote content from Markdown files. Very advanced Markdown
+extensions outside common CommonMark/GFM reading patterns may still need future
+parsing work.
+
+## Release history
+
+See `CHANGELOG.md`.
 
 ## License
 

@@ -60,6 +60,10 @@ private struct MarkdownPreviewView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 14) {
+                if outline.count >= 2 {
+                    OutlineBlockView(items: outline)
+                }
+
                 ForEach(Array(blocks.enumerated()), id: \.offset) { _, block in
                     switch block {
                     case .markdown(let text):
@@ -78,6 +82,10 @@ private struct MarkdownPreviewView: View {
         }
         .background(Color(nsColor: .textBackgroundColor))
         .navigationTitle(title)
+    }
+
+    private var outline: [MarkdownOutlineItem] {
+        MarkdownOutlineBuilder.build(from: blocks)
     }
 }
 
@@ -290,31 +298,98 @@ private struct CodeBlockView: View {
     }
 }
 
-private struct TableBlockView: View {
-    let table: MarkdownTable
+private struct OutlineBlockView: View {
+    let items: [MarkdownOutlineItem]
 
     var body: some View {
-        ScrollView(.horizontal) {
-            Grid(alignment: .topLeading, horizontalSpacing: 0, verticalSpacing: 0) {
-                GridRow {
-                    ForEach(Array(table.headers.enumerated()), id: \.offset) { column, value in
-                        tableCell(value, column: column, isHeader: true)
-                    }
-                }
+        VStack(alignment: .leading, spacing: 9) {
+            HStack(spacing: 7) {
+                Image(systemName: "list.bullet.rectangle")
+                    .foregroundStyle(.secondary)
+                Text("Contents")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+            }
 
-                ForEach(Array(table.rows.enumerated()), id: \.offset) { _, row in
+            VStack(alignment: .leading, spacing: 6) {
+                ForEach(Array(items.enumerated()), id: \.offset) { _, item in
+                    Text(item.title)
+                        .font(.system(size: fontSize(for: item.level), weight: item.level <= 2 ? .semibold : .regular))
+                        .foregroundStyle(item.level == 1 ? .primary : .secondary)
+                        .lineLimit(2)
+                        .textSelection(.enabled)
+                        .padding(.leading, CGFloat(max(item.level - 1, 0)) * 13)
+                }
+            }
+        }
+        .padding(12)
+        .background(Color(nsColor: .controlBackgroundColor))
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .overlay {
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color(nsColor: .separatorColor), lineWidth: 1)
+        }
+    }
+
+    private func fontSize(for level: Int) -> CGFloat {
+        switch level {
+        case 1: return 14
+        case 2: return 13
+        default: return 12
+        }
+    }
+}
+
+private struct TableBlockView: View {
+    let table: MarkdownTable
+    @State private var copiedFormat: TableCopyFormat?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 9) {
+            HStack(spacing: 8) {
+                Label("Table", systemImage: "tablecells")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+
+                Spacer()
+
+                ForEach(TableCopyFormat.allCases) { format in
+                    Button {
+                        copy(format)
+                    } label: {
+                        Label(
+                            copiedFormat == format ? "Copied" : format.rawValue,
+                            systemImage: copiedFormat == format ? "checkmark" : "doc.on.doc"
+                        )
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .help("Copy table as \(format.helpText)")
+                }
+            }
+
+            ScrollView(.horizontal) {
+                Grid(alignment: .topLeading, horizontalSpacing: 0, verticalSpacing: 0) {
                     GridRow {
-                        ForEach(0..<table.headers.count, id: \.self) { column in
-                            tableCell(rowValue(row, column), column: column, isHeader: false)
+                        ForEach(Array(table.headers.enumerated()), id: \.offset) { column, value in
+                            tableCell(value, column: column, isHeader: true)
+                        }
+                    }
+
+                    ForEach(Array(table.rows.enumerated()), id: \.offset) { _, row in
+                        GridRow {
+                            ForEach(0..<table.headers.count, id: \.self) { column in
+                                tableCell(rowValue(row, column), column: column, isHeader: false)
+                            }
                         }
                     }
                 }
-            }
-            .background(Color(nsColor: .textBackgroundColor))
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .overlay {
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color(nsColor: .separatorColor), lineWidth: 1)
+                .background(Color(nsColor: .textBackgroundColor))
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color(nsColor: .separatorColor), lineWidth: 1)
+                }
             }
         }
     }
@@ -341,6 +416,50 @@ private struct TableBlockView: View {
             return 210
         default:
             return 180
+        }
+    }
+
+    private func copy(_ format: TableCopyFormat) {
+        let text: String
+        switch format {
+        case .markdown:
+            text = MarkdownTableExporter.markdown(table)
+        case .csv:
+            text = MarkdownTableExporter.csv(table)
+        case .tsv:
+            text = MarkdownTableExporter.tsv(table)
+        }
+
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(text, forType: .string)
+        copiedFormat = format
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+            if copiedFormat == format {
+                copiedFormat = nil
+            }
+        }
+    }
+}
+
+private enum TableCopyFormat: String, CaseIterable, Identifiable {
+    case markdown = "MD"
+    case csv = "CSV"
+    case tsv = "TSV"
+
+    var id: String {
+        rawValue
+    }
+
+    var helpText: String {
+        switch self {
+        case .markdown:
+            return "Markdown"
+        case .csv:
+            return "CSV"
+        case .tsv:
+            return "TSV"
         }
     }
 }

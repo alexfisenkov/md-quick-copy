@@ -10,6 +10,9 @@ public struct MarkdownTable: Equatable {
     public let headers: [String]
     public let alignments: [MarkdownTableAlignment]
     public let rows: [[String]]
+    public var columnCount: Int {
+        headers.count
+    }
 
     public init(headers: [String], alignments: [MarkdownTableAlignment], rows: [[String]]) {
         self.headers = headers
