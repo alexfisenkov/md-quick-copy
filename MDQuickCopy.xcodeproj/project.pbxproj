@@ -1,0 +1,696 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0F22CC0E2D16EC3EE210876B /* MDQuickCopyCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8D92A64A6B2166CBCDF54CA /* MDQuickCopyCore.framework */; };
+		12A4349BFAE62B04807EF4A8 /* MDQuickCopyPreviewExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0A6D0C71A35402AE371AFE1B /* MDQuickCopyPreviewExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		176D5269BBFAEE50AD3FFE66 /* MarkdownBlockParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE6CA602EB10D04393DB457 /* MarkdownBlockParserTests.swift */; };
+		32A64809C90B3B2CC8E867DE /* MDQuickCopyCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E8D92A64A6B2166CBCDF54CA /* MDQuickCopyCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		726F426CE54277B6C085FE9F /* MDQuickCopyCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E8D92A64A6B2166CBCDF54CA /* MDQuickCopyCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		732B9D28C3694716D9D3B2BE /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976ADA5274B2F925B64B4F4D /* PreviewViewController.swift */; };
+		C1EDAA0746B22CB564915046 /* MarkdownBlockParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5C931E0FCC9E4EC6FF5A98 /* MarkdownBlockParser.swift */; };
+		C9B7FC628BF9D8B1A3CB38FE /* QuickLookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AFF8FDBC4016B54E4C18FFF /* QuickLookUI.framework */; };
+		F63F2ABCC7FD699C5B5D6019 /* MDQuickCopyCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8D92A64A6B2166CBCDF54CA /* MDQuickCopyCore.framework */; };
+		FB07C029AE07E801EE476BBA /* MDQuickCopyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2683D4FE63D1ECC94E7F2074 /* MDQuickCopyApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2B68EEE6AF4D6BDA414C4B4C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C88B11718C4CBAC1502482F2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B806E8DBC881A5D2DE53F18;
+			remoteInfo = MDQuickCopyCore;
+		};
+		3C2FABEE6D45C7F0E8943B88 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C88B11718C4CBAC1502482F2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4BB31810BD9F4A7A762BD42F;
+			remoteInfo = MDQuickCopyPreviewExtension;
+		};
+		E9BA5FBD4F0B5E5401FE7804 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C88B11718C4CBAC1502482F2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B806E8DBC881A5D2DE53F18;
+			remoteInfo = MDQuickCopyCore;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		31A32156E5C7ED14D517531C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				32A64809C90B3B2CC8E867DE /* MDQuickCopyCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3348E624D75AEA920C6E9AEE /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				12A4349BFAE62B04807EF4A8 /* MDQuickCopyPreviewExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7C6DB94113C6C494C711459B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				726F426CE54277B6C085FE9F /* MDQuickCopyCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0A6D0C71A35402AE371AFE1B /* MDQuickCopyPreviewExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MDQuickCopyPreviewExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		193050CD3FB86221E000A6ED /* MDQuickCopyCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MDQuickCopyCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AFF8FDBC4016B54E4C18FFF /* QuickLookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLookUI.framework; path = System/Library/Frameworks/QuickLookUI.framework; sourceTree = SDKROOT; };
+		2683D4FE63D1ECC94E7F2074 /* MDQuickCopyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDQuickCopyApp.swift; sourceTree = "<group>"; };
+		276E6BB5FE3ED7C72D2A943C /* MDQuickCopy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MDQuickCopy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AE6CA602EB10D04393DB457 /* MarkdownBlockParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownBlockParserTests.swift; sourceTree = "<group>"; };
+		4AF8997180FD1E4DBD9F601B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		7C5C931E0FCC9E4EC6FF5A98 /* MarkdownBlockParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownBlockParser.swift; sourceTree = "<group>"; };
+		976ADA5274B2F925B64B4F4D /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
+		9C4C5B5A88B6CDBBFFC5A7DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A431B38485DEC497F869AD04 /* PreviewExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PreviewExtension.entitlements; sourceTree = "<group>"; };
+		C89F7EDECAA4E39FEC1A4983 /* MDQuickCopy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MDQuickCopy.entitlements; sourceTree = "<group>"; };
+		E8D92A64A6B2166CBCDF54CA /* MDQuickCopyCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MDQuickCopyCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		17B0A2D81F910971065C8216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0F22CC0E2D16EC3EE210876B /* MDQuickCopyCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64D12FE2300F9862BFAB22E4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F63F2ABCC7FD699C5B5D6019 /* MDQuickCopyCore.framework in Frameworks */,
+				C9B7FC628BF9D8B1A3CB38FE /* QuickLookUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2803E09B9516CD5BB6B64ACB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1AFF8FDBC4016B54E4C18FFF /* QuickLookUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		62096C81C710FDC600D50CD4 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				3AE6CA602EB10D04393DB457 /* MarkdownBlockParserTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		6DC8202A6EC362C4F0D16D61 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				276E6BB5FE3ED7C72D2A943C /* MDQuickCopy.app */,
+				E8D92A64A6B2166CBCDF54CA /* MDQuickCopyCore.framework */,
+				193050CD3FB86221E000A6ED /* MDQuickCopyCoreTests.xctest */,
+				0A6D0C71A35402AE371AFE1B /* MDQuickCopyPreviewExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7335D99224CE6076FDF936DC /* PreviewExtension */ = {
+			isa = PBXGroup;
+			children = (
+				4AF8997180FD1E4DBD9F601B /* Info.plist */,
+				A431B38485DEC497F869AD04 /* PreviewExtension.entitlements */,
+				976ADA5274B2F925B64B4F4D /* PreviewViewController.swift */,
+			);
+			path = PreviewExtension;
+			sourceTree = "<group>";
+		};
+		95406D2D06802046B397BCB5 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				7C5C931E0FCC9E4EC6FF5A98 /* MarkdownBlockParser.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		D85F347B24D22795D7558B6C = {
+			isa = PBXGroup;
+			children = (
+				DEFF723BBEC7B43302667BB2 /* App */,
+				95406D2D06802046B397BCB5 /* Core */,
+				7335D99224CE6076FDF936DC /* PreviewExtension */,
+				62096C81C710FDC600D50CD4 /* Tests */,
+				2803E09B9516CD5BB6B64ACB /* Frameworks */,
+				6DC8202A6EC362C4F0D16D61 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DEFF723BBEC7B43302667BB2 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				9C4C5B5A88B6CDBBFFC5A7DB /* Info.plist */,
+				C89F7EDECAA4E39FEC1A4983 /* MDQuickCopy.entitlements */,
+				2683D4FE63D1ECC94E7F2074 /* MDQuickCopyApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		27571D0B6481A1C9E5FB237D /* MDQuickCopy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B601EFD2C57AA24B5BAA9190 /* Build configuration list for PBXNativeTarget "MDQuickCopy" */;
+			buildPhases = (
+				823EE98AA131D42728CE7FF4 /* Sources */,
+				3348E624D75AEA920C6E9AEE /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				057FD4BBD390BF0C4408A4CB /* PBXTargetDependency */,
+			);
+			name = MDQuickCopy;
+			packageProductDependencies = (
+			);
+			productName = MDQuickCopy;
+			productReference = 276E6BB5FE3ED7C72D2A943C /* MDQuickCopy.app */;
+			productType = "com.apple.product-type.application";
+		};
+		2B806E8DBC881A5D2DE53F18 /* MDQuickCopyCore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C08759D321E149EA0DF6A417 /* Build configuration list for PBXNativeTarget "MDQuickCopyCore" */;
+			buildPhases = (
+				DC8EA20F92BF9F065F1CA6A4 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MDQuickCopyCore;
+			packageProductDependencies = (
+			);
+			productName = MDQuickCopyCore;
+			productReference = E8D92A64A6B2166CBCDF54CA /* MDQuickCopyCore.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		4BB31810BD9F4A7A762BD42F /* MDQuickCopyPreviewExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4016E9FF66679D34C2C8D53A /* Build configuration list for PBXNativeTarget "MDQuickCopyPreviewExtension" */;
+			buildPhases = (
+				4010F9404C3E5BB9076CB062 /* Sources */,
+				64D12FE2300F9862BFAB22E4 /* Frameworks */,
+				31A32156E5C7ED14D517531C /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B7596EB7681796071524A899 /* PBXTargetDependency */,
+			);
+			name = MDQuickCopyPreviewExtension;
+			packageProductDependencies = (
+			);
+			productName = MDQuickCopyPreviewExtension;
+			productReference = 0A6D0C71A35402AE371AFE1B /* MDQuickCopyPreviewExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		53623D975D318C47FAB28113 /* MDQuickCopyCoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 920AEC7BE4B675A57D818157 /* Build configuration list for PBXNativeTarget "MDQuickCopyCoreTests" */;
+			buildPhases = (
+				D04FA217EEC900ED0D00E02F /* Sources */,
+				17B0A2D81F910971065C8216 /* Frameworks */,
+				7C6DB94113C6C494C711459B /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2D7159099A4820B49DA79A04 /* PBXTargetDependency */,
+			);
+			name = MDQuickCopyCoreTests;
+			packageProductDependencies = (
+			);
+			productName = MDQuickCopyCoreTests;
+			productReference = 193050CD3FB86221E000A6ED /* MDQuickCopyCoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C88B11718C4CBAC1502482F2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					27571D0B6481A1C9E5FB237D = {
+						ProvisioningStyle = Manual;
+					};
+					2B806E8DBC881A5D2DE53F18 = {
+						ProvisioningStyle = Manual;
+					};
+					4BB31810BD9F4A7A762BD42F = {
+						ProvisioningStyle = Manual;
+					};
+					53623D975D318C47FAB28113 = {
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 4B59B2527F63E096E77DD74C /* Build configuration list for PBXProject "MDQuickCopy" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = D85F347B24D22795D7558B6C;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 6DC8202A6EC362C4F0D16D61 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				27571D0B6481A1C9E5FB237D /* MDQuickCopy */,
+				2B806E8DBC881A5D2DE53F18 /* MDQuickCopyCore */,
+				53623D975D318C47FAB28113 /* MDQuickCopyCoreTests */,
+				4BB31810BD9F4A7A762BD42F /* MDQuickCopyPreviewExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4010F9404C3E5BB9076CB062 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				732B9D28C3694716D9D3B2BE /* PreviewViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		823EE98AA131D42728CE7FF4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB07C029AE07E801EE476BBA /* MDQuickCopyApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D04FA217EEC900ED0D00E02F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				176D5269BBFAEE50AD3FFE66 /* MarkdownBlockParserTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DC8EA20F92BF9F065F1CA6A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C1EDAA0746B22CB564915046 /* MarkdownBlockParser.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		057FD4BBD390BF0C4408A4CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4BB31810BD9F4A7A762BD42F /* MDQuickCopyPreviewExtension */;
+			targetProxy = 3C2FABEE6D45C7F0E8943B88 /* PBXContainerItemProxy */;
+		};
+		2D7159099A4820B49DA79A04 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2B806E8DBC881A5D2DE53F18 /* MDQuickCopyCore */;
+			targetProxy = E9BA5FBD4F0B5E5401FE7804 /* PBXContainerItemProxy */;
+		};
+		B7596EB7681796071524A899 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2B806E8DBC881A5D2DE53F18 /* MDQuickCopyCore */;
+			targetProxy = 2B68EEE6AF4D6BDA414C4B4C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0A2D7145869F5643369965B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexfisenkov.MDQuickCopyCoreTests;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		152AA63E0CA35B0AA7AF4D50 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = PreviewExtension/PreviewExtension.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = PreviewExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexfisenkov.MDQuickCopy.PreviewExtension;
+				PRODUCT_NAME = "MD Quick Copy Preview Extension";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		15CC4BBC6980CB5CFE67FCFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = PreviewExtension/PreviewExtension.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = PreviewExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexfisenkov.MDQuickCopy.PreviewExtension;
+				PRODUCT_NAME = "MD Quick Copy Preview Extension";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		4AA42A6A4AD4F6129CD3284F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		5C2A702E243A2DF9F264D727 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexfisenkov.MDQuickCopyCore;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		86FB9645A3DFFBF02891A627 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/MDQuickCopy.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexfisenkov.MDQuickCopy;
+				PRODUCT_NAME = "MD Quick Copy";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		B95285C558396BE31C6B835E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexfisenkov.MDQuickCopyCore;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		CD6A48A136E8EDBA70AA3F56 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		DD6843A0092FC32F64DB60D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/MDQuickCopy.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexfisenkov.MDQuickCopy;
+				PRODUCT_NAME = "MD Quick Copy";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		FA845B9646400A007A7CCE85 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexfisenkov.MDQuickCopyCoreTests;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4016E9FF66679D34C2C8D53A /* Build configuration list for PBXNativeTarget "MDQuickCopyPreviewExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				152AA63E0CA35B0AA7AF4D50 /* Debug */,
+				15CC4BBC6980CB5CFE67FCFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		4B59B2527F63E096E77DD74C /* Build configuration list for PBXProject "MDQuickCopy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD6A48A136E8EDBA70AA3F56 /* Debug */,
+				4AA42A6A4AD4F6129CD3284F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		920AEC7BE4B675A57D818157 /* Build configuration list for PBXNativeTarget "MDQuickCopyCoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA845B9646400A007A7CCE85 /* Debug */,
+				0A2D7145869F5643369965B3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B601EFD2C57AA24B5BAA9190 /* Build configuration list for PBXNativeTarget "MDQuickCopy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86FB9645A3DFFBF02891A627 /* Debug */,
+				DD6843A0092FC32F64DB60D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C08759D321E149EA0DF6A417 /* Build configuration list for PBXNativeTarget "MDQuickCopyCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5C2A702E243A2DF9F264D727 /* Debug */,
+				B95285C558396BE31C6B835E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C88B11718C4CBAC1502482F2 /* Project object */;
+}

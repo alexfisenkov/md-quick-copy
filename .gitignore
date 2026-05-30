@@ -1,0 +1,18 @@
+.DS_Store
+.codex/
+docs/superpowers/
+
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+*.xcuserdatad/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcresult
+
+# Local verification artifacts
+test-output/
+
+# Generated/vendor experiments
+vendor/
