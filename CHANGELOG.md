@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.3.0 - 2026-05-30
+
+- Switched rendered Markdown text blocks to a native selectable AppKit text view.
+- Added partial mouse selection with an in-preview `Copy selection` button.
+- Added clickable Markdown links and bare URL links in text blocks.
+- Added explicit link hit-testing with a clipboard fallback when the Quick Look
+  host refuses to open a URL.
+- Added Core tests for link attributes and inline-only Markdown parsing.
+- Added a dedicated selection/link runtime fixture.
+
 ## 1.2.0 - 2026-05-30
 
 - Added visible table copy controls in Quick Look previews: Markdown, CSV, and TSV.

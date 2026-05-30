@@ -8,7 +8,7 @@ final class PreviewViewController: NSViewController, @preconcurrency QLPreviewin
     private var hostingView: NSHostingView<MarkdownPreviewView>!
 
     override func loadView() {
-        let hostingView = NSHostingView(rootView: MarkdownPreviewView(title: "", blocks: []))
+        let hostingView = NSHostingView(rootView: MarkdownPreviewView(title: "", blocks: [], openURL: { _ in }))
         self.hostingView = hostingView
         view = hostingView
     }
@@ -18,7 +18,10 @@ final class PreviewViewController: NSViewController, @preconcurrency QLPreviewin
             let markdown = try readMarkdown(at: url)
             hostingView.rootView = MarkdownPreviewView(
                 title: url.lastPathComponent,
-                blocks: MarkdownBlockParser.parse(markdown)
+                blocks: MarkdownBlockParser.parse(markdown),
+                openURL: { [weak self] url in
+                    self?.open(url)
+                }
             )
             handler(nil)
         } catch {
@@ -40,6 +43,29 @@ final class PreviewViewController: NSViewController, @preconcurrency QLPreviewin
 
         throw PreviewError.unsupportedEncoding(url.lastPathComponent)
     }
+
+    private func open(_ url: URL) {
+        guard let extensionContext else {
+            copyURLToPasteboard(url)
+            return
+        }
+
+        extensionContext.open(url) { success in
+            guard !success else {
+                return
+            }
+
+            DispatchQueue.main.async {
+                self.copyURLToPasteboard(url)
+            }
+        }
+    }
+
+    private func copyURLToPasteboard(_ url: URL) {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(url.absoluteString, forType: .string)
+    }
 }
 
 private enum PreviewError: LocalizedError {
@@ -56,6 +82,7 @@ private enum PreviewError: LocalizedError {
 private struct MarkdownPreviewView: View {
     let title: String
     let blocks: [MarkdownBlock]
+    let openURL: (URL) -> Void
 
     var body: some View {
         ScrollView {
@@ -67,7 +94,7 @@ private struct MarkdownPreviewView: View {
                 ForEach(Array(blocks.enumerated()), id: \.offset) { _, block in
                     switch block {
                     case .markdown(let text):
-                        MarkdownTextBlock(text: text)
+                        MarkdownTextBlock(text: text, openURL: openURL)
                     case .code(let language, let text):
                         CodeBlockView(language: language, code: text)
                     case .table(let table):
@@ -91,156 +118,48 @@ private struct MarkdownPreviewView: View {
 
 private struct MarkdownTextBlock: View {
     let text: String
+    let openURL: (URL) -> Void
+    @State private var measuredHeight: CGFloat = 1
+    @State private var selectedText = ""
+    @State private var copiedSelection = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 7) {
-            ForEach(Array(text.components(separatedBy: .newlines).enumerated()), id: \.offset) { _, rawLine in
-                lineView(rawLine)
-            }
-        }
-    }
+        ZStack(alignment: .topTrailing) {
+            SelectableAttributedTextView(
+                attributedText: MarkdownPreviewAttributedTextRenderer.render(text),
+                openURL: openURL,
+                measuredHeight: $measuredHeight,
+                selectedText: $selectedText
+            )
+            .frame(maxWidth: .infinity, minHeight: measuredHeight, maxHeight: measuredHeight)
 
-    @ViewBuilder
-    private func lineView(_ rawLine: String) -> some View {
-        let line = rawLine.trimmingCharacters(in: .whitespaces)
-        if line.isEmpty {
-            Spacer(minLength: 4)
-        } else if let heading = heading(line) {
-            headingView(level: heading.level, text: heading.text)
-        } else if let task = taskListItem(line) {
-            HStack(alignment: .top, spacing: 8) {
-                Image(systemName: task.isDone ? "checkmark.square.fill" : "square")
-                    .font(.body.weight(.medium))
-                    .foregroundStyle(task.isDone ? .green : .secondary)
-                    .frame(width: 16)
-                Text(inlineMarkdown(task.text))
-            }
-            .font(.body)
-        } else if let unordered = unorderedListItem(line) {
-            HStack(alignment: .top, spacing: 8) {
-                Text("•")
-                    .font(.body.weight(.medium))
-                Text(inlineMarkdown(unordered))
-            }
-            .font(.body)
-        } else if let ordered = orderedListItem(line) {
-            HStack(alignment: .top, spacing: 8) {
-                Text("\(ordered.number).")
-                    .font(.body.weight(.medium))
-                    .foregroundStyle(.secondary)
-                Text(inlineMarkdown(ordered.text))
-            }
-            .font(.body)
-        } else if let quote = blockquote(line) {
-            Text(inlineMarkdown(quote))
-                .font(.body)
-                .foregroundStyle(.secondary)
-                .padding(.leading, 12)
-                .overlay(alignment: .leading) {
-                    Rectangle()
-                        .fill(Color(nsColor: .separatorColor))
-                        .frame(width: 3)
+            if !selectedText.isEmpty {
+                Button {
+                    copySelection()
+                } label: {
+                    Label(
+                        copiedSelection ? "Copied" : "Copy selection",
+                        systemImage: copiedSelection ? "checkmark" : "doc.on.doc"
+                    )
                 }
-        } else if isHorizontalRule(line) {
-            Rectangle()
-                .fill(Color(nsColor: .separatorColor))
-                .frame(height: 1)
-                .padding(.vertical, 7)
-        } else {
-            Text(inlineMarkdown(line))
-                .font(.body)
-        }
-    }
-
-    @ViewBuilder
-    private func headingView(level: Int, text: String) -> some View {
-        Text(inlineMarkdown(text))
-            .font(.system(size: headingSize(level), weight: .semibold))
-            .padding(.bottom, level == 1 ? 5 : 0)
-            .overlay(alignment: .bottom) {
-                if level == 1 {
-                    Rectangle()
-                        .fill(Color(nsColor: .separatorColor))
-                        .frame(height: 1)
-                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.small)
+                .padding(6)
+                .background(.regularMaterial, in: Capsule())
             }
-    }
-
-    private func heading(_ line: String) -> (level: Int, text: String)? {
-        let level = line.prefix { $0 == "#" }.count
-        guard (1...6).contains(level),
-              line.dropFirst(level).first == " " else {
-            return nil
-        }
-
-        return (level, String(line.dropFirst(level + 1)))
-    }
-
-    private func headingSize(_ level: Int) -> CGFloat {
-        switch level {
-        case 1: return 30
-        case 2: return 22
-        case 3: return 18
-        case 4: return 16
-        default: return 15
         }
     }
 
-    private func unorderedListItem(_ line: String) -> String? {
-        for marker in ["- ", "* ", "+ "] where line.hasPrefix(marker) {
-            return String(line.dropFirst(marker.count))
-        }
-        return nil
-    }
+    private func copySelection() {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(selectedText, forType: .string)
+        copiedSelection = true
 
-    private func taskListItem(_ line: String) -> (isDone: Bool, text: String)? {
-        guard let content = unorderedListItem(line) else {
-            return nil
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+            copiedSelection = false
+            selectedText = ""
         }
-
-        if content.hasPrefix("[ ] ") {
-            return (false, String(content.dropFirst(4)))
-        }
-        if content.hasPrefix("[x] ") || content.hasPrefix("[X] ") {
-            return (true, String(content.dropFirst(4)))
-        }
-
-        return nil
-    }
-
-    private func orderedListItem(_ line: String) -> (number: String, text: String)? {
-        guard let markerIndex = line.firstIndex(of: ".") else {
-            return nil
-        }
-
-        let number = line[..<markerIndex]
-        let textStart = line.index(after: markerIndex)
-        guard !number.isEmpty,
-              number.allSatisfy(\.isNumber),
-              textStart < line.endIndex,
-              line[textStart] == " " else {
-            return nil
-        }
-
-        return (String(number), String(line[line.index(after: textStart)...]))
-    }
-
-    private func blockquote(_ line: String) -> String? {
-        if line.hasPrefix("> ") {
-            return String(line.dropFirst(2))
-        }
-        if line == ">" {
-            return ""
-        }
-        return nil
-    }
-
-    private func isHorizontalRule(_ line: String) -> Bool {
-        let collapsed = line.replacingOccurrences(of: " ", with: "")
-        return collapsed.count >= 3 &&
-            (collapsed.allSatisfy { $0 == "-" } ||
-             collapsed.allSatisfy { $0 == "*" } ||
-             collapsed.allSatisfy { $0 == "_" })
     }
 }
 
@@ -484,5 +403,5 @@ private extension Collection {
 }
 
 private func inlineMarkdown(_ text: String) -> AttributedString {
-    (try? AttributedString(markdown: text)) ?? AttributedString(text)
+    MarkdownAttributedStringBuilder.build(text)
 }

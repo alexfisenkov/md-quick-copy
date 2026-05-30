@@ -1,17 +1,22 @@
 # MD Quick Copy
 
-Native macOS Quick Look previews for Markdown files, with visible copy buttons
-for fenced code blocks and Markdown tables.
+Native macOS Quick Look previews for Markdown files, with selectable rendered
+text, clickable links, and visible copy buttons for fenced code blocks and
+Markdown tables.
 
 Select a `.md` file in Finder, press Space, and Markdown opens as a readable
 preview instead of raw text. Code blocks get a `Copy` button that writes the
 block to the macOS clipboard. Tables get copy controls for Markdown, CSV, and
-TSV.
+TSV. Rendered Markdown text can be partially selected with the mouse; a visible
+`Copy selection` button appears for the selected range.
 
 ## Features
 
 - Quick Look preview extension for `.md` and `.markdown` files.
 - Native SwiftUI/AppKit renderer, no WebKit dependency.
+- Selectable rendered Markdown text with a visible partial-copy button.
+- Clickable Markdown links and bare URLs in text blocks, with a clipboard
+  fallback if the Quick Look host refuses to open a URL.
 - GitHub-Flavored Markdown tables with column alignment.
 - Table copy buttons for Markdown, CSV, and TSV.
 - Document outline for Markdown files with multiple headings.
@@ -121,7 +126,12 @@ pushes and pull requests.
 uses a native renderer for predictable Quick Look behavior and avoids executing
 HTML, scripts, or remote content from Markdown files. Very advanced Markdown
 extensions outside common CommonMark/GFM reading patterns may still need future
-parsing work.
+parsing work. Links open through the Quick Look extension context; if macOS
+refuses the open request, the URL is copied to the clipboard instead. Quick Look
+does not reliably give preview extensions normal first-responder ownership, so
+partial text copying is exposed through the visible `Copy selection` button
+instead of relying on Command-C. Markdown HTML blocks are intentionally not
+executed.
 
 ## Release history
 
